@@ -211,10 +211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279e3bb5f8f4d4a429bdbc923fd0d88b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: Unicorn
+  target: To be or not to be!
   mutationRate: 0.01
   numberOfPopulation: 200
   text: {fileID: 1377970037}
+  useMatingPool: 0
 --- !u!114 &279472434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +232,7 @@ MonoBehaviour:
   target: 
   generations: 0
   finished: 0
+  mating: 0
 --- !u!4 &279472435
 Transform:
   m_ObjectHideFlags: 0
