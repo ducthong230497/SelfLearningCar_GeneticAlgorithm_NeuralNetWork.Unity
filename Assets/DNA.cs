@@ -22,7 +22,7 @@ public class DNA
 
     public float fitness;
     public int score;
-    public float probalility;
+    public double probability;
     // Constructor (makes a random DNA)
     public DNA(int num)
     {

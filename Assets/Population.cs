@@ -96,7 +96,7 @@ public class Population : MonoBehaviour
             }
             for (int i = 0; i < DNAs.Length; i++)
             {
-                DNAs[i].probalility = (float)DNAs[i].score / (float)totalScore;
+                DNAs[i].probability = (double)DNAs[i].score / (double)totalScore;
             }
         }
     }
@@ -114,8 +114,8 @@ public class Population : MonoBehaviour
                 DNA partnerB;
                 if (mating)
                 {
-                    int a = (int)(Random.Range(0 ,matingPool.Count));
-                    int b = (int)(Random.Range(0, matingPool.Count));
+                    int a = (Random.Range(0 ,matingPool.Count));
+                    int b = (Random.Range(0, matingPool.Count));
                     partnerA = matingPool[a];
                     partnerB = matingPool[b];
                 }
@@ -172,11 +172,11 @@ public class Population : MonoBehaviour
     private DNA PickOne(DNA[] DNAs)
     {
         int index = 0;
-        float r = Random.Range(0f, 1f);
+        double r = Random.Range(0f, 1f);
 
         while (r > 0)
         {
-            r -= DNAs[index].probalility;
+            r -= DNAs[index].probability;
             index++;
         }
         index--;
