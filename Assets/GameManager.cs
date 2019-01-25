@@ -5,31 +5,78 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public string target;
+    #region To be or not to be
+    //public string target;
+    //public float mutationRate;
+    //public int numberOfPopulation;
+    //public bool useMatingPool;
+
+    //private Population population;
+    #endregion
+
+    public TextMeshProUGUI textGeneration;
+    public TextMeshProUGUI textBestAgent;
+    public TextMeshProUGUI textPreviousBestAgent;
+    public Transform target;
+    public Transform spawnPos;
     public float mutationRate;
-    public int numberOfPopulation;
-    public TextMeshProUGUI text;
-    public bool useMatingPool;
-    private Population population;
+    public int numberOfAgent;
+    public int brainSize;
+    public bool mating;
+
+    private AgentPopulation agentPopulation;
     // Start is called before the first frame update
     void Start()
     {
-        population = GetComponent<Population>();
-        population.InitPopulation(target, mutationRate, numberOfPopulation, useMatingPool);
+        #region To be or not to be
+        //population = GetComponent<Population>();
+        //population.InitPopulation(target, mutationRate, numberOfPopulation, useMatingPool);
+        #endregion
+
+        textGeneration.text = "<color=red>Generation: 1</color>";
+        agentPopulation = GetComponent<AgentPopulation>();
+        agentPopulation.InitPopulation(target.position, spawnPos.position, mutationRate, numberOfAgent, brainSize, mating);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!population.IsFinish())
+        #region To be or not to be
+        //if (!population.IsFinish())
+        //{
+        //    population.CalculateFitness(target);
+
+        //    population.NaturalSelection();
+
+        //    text.text = population.Evaluate();
+
+        //    population.Generate();
+        //}
+        #endregion
+    }
+
+    private void FixedUpdate()
+    {
+        if(!agentPopulation.IsFinish())
         {
-            population.CalculateFitness(target);
+            if (agentPopulation.AllDead())
+            {
+                agentPopulation.CalculateFitness();
 
-            population.NaturalSelection();
+                agentPopulation.NaturalSelection();
 
-            text.text = population.Evaluate();
+                (bool, string, string, float) info = agentPopulation.Evaluate();
 
-            population.Generate();
+                textGeneration.text = $"<color=red>Generation: {info.Item3}</color>";
+
+                textPreviousBestAgent.text = $"<color=red>Previous best agent: {agentPopulation.Generate()}</color>";
+
+                Debug.Log("All agents are dead");
+            }
+            else
+            {
+                agentPopulation.MoveAgents();
+            }
         }
     }
 }

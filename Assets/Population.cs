@@ -3,19 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Population : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
+{   
     [HideInInspector] public float mutationRate;                          // Mutation rate
     [HideInInspector] public DNA[] DNAs;                // Array to hold the current population
     [HideInInspector] public List<DNA> matingPool;      // ArrayList which we will use for our "mating pool"
