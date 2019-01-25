@@ -7,21 +7,21 @@ public class Agent : MonoBehaviour
     [SerializeField] private Material aliveMaterial;
     [SerializeField] private Material dieMaterial;
     [SerializeField] private Material championMaterial;
+    [SerializeField] private int      fitnessPow;
 
     [HideInInspector] public Vector3[] directions;
     [HideInInspector] public float moveSpeed = 10;
     [HideInInspector] public float fitness;
-    [HideInInspector] public float score;
     [HideInInspector] public double probability;
     [HideInInspector] public bool reachTarget;
+    [HideInInspector] public int iterator;
 
     private MeshRenderer meshRenderer;
     private Rigidbody rigidbody;
-    [SerializeField] private int i;
     private float sqrDistance;
     private bool dead;
 
-    private void Start()
+    private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         rigidbody = GetComponent<Rigidbody>();
@@ -30,7 +30,7 @@ public class Agent : MonoBehaviour
     public void InitAgent(int brainSize, float distance)
     {
         sqrDistance = distance;
-        i = 0;
+        iterator = 0;
         directions = new Vector3[brainSize];
         for (int i = 0; i < directions.Length; i++)
         {
@@ -40,8 +40,9 @@ public class Agent : MonoBehaviour
 
     public void CalculateFitness(Vector3 target, Vector3 spawnPos)
     {
-        fitness = 1 - Mathf.Clamp01((Vector3.SqrMagnitude(target - gameObject.transform.position) / sqrDistance));
-        score = fitness > 0 ? Vector3.SqrMagnitude(gameObject.transform.position - spawnPos) : 0;
+        //fitness = 1 - Mathf.Clamp01((Vector3.SqrMagnitude(target - gameObject.transform.position) / sqrDistance));
+        fitness = 1 / Mathf.Pow(Vector3.SqrMagnitude(target - gameObject.transform.position), fitnessPow);
+        //score = fitness > 0 ? Vector3.SqrMagnitude(gameObject.transform.position - spawnPos) : 0;
         //Debug.Log($"fitness of {gameObject.name}: {fitness} score: {score}");
     }
 
@@ -57,14 +58,14 @@ public class Agent : MonoBehaviour
         {
             if (i > midpoint) childDirections[i] = directions[i];
             else childDirections[i] = partner.directions[i];
-            //int test = rand.Next();
+            //int test = Random.Range(int.MinValue, int.MaxValue);
             //if (test % 2 == 0)
             //{
-            //    child.genes[i] = genes[i];
+            //    childDirections[i] = directions[i];
             //}
             //else
             //{
-            //    child.genes[i] = partner.genes[i];
+            //    childDirections[i] = partner.directions[i];
             //}
         }
         return childDirections;
@@ -74,9 +75,9 @@ public class Agent : MonoBehaviour
     {
         if (!dead)
         {
-            GetComponent<Rigidbody>().AddForce(directions[i] * moveSpeed);
-            i++;
-            if(i >= directions.Length)
+            rigidbody.AddForce(directions[iterator] * moveSpeed);
+            iterator++;
+            if(iterator >= directions.Length)
             {
                 OnAgentDead();
             }
@@ -98,8 +99,13 @@ public class Agent : MonoBehaviour
         transform.position = spawnPos;
         meshRenderer.material = aliveMaterial;
         rigidbody.velocity = Vector3.zero;
-        i = 0;
+        iterator = 0;
         dead = false;
+    }
+
+    public void KillAgent()
+    {
+        OnAgentDead();
     }
 
     private void OnCollisionEnter(Collision collision)

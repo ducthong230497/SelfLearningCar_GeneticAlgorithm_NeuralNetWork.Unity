@@ -17,6 +17,7 @@ public class AgentPopulation : MonoBehaviour
     private Vector3 spawnPosition;
     private float maxFitness;
     private int perfectScore;
+    private int currentBestAgent;
 
     public void InitPopulation(Vector3 target, Vector3 spawnPos, float m, int numberAgent, int brainSize, bool mating)
     {
@@ -41,6 +42,7 @@ public class AgentPopulation : MonoBehaviour
 
     public void CalculateFitness()
     {
+        currentBestAgent = -1;
         for (int i = 0; i < agents.Count; i++)
         {
             agents[i].GetComponent<Agent>().CalculateFitness(target, spawnPosition);
@@ -80,14 +82,19 @@ public class AgentPopulation : MonoBehaviour
         }
         else
         {
-            float totalScore = 0;
+            //float totalScore = 0;
+            //for (int i = 0; i < agents.Count; i++)
+            //{
+            //    totalScore += agents[i].GetComponent<Agent>().score;
+            //}
+            float totalFitness = 0;
             for (int i = 0; i < agents.Count; i++)
             {
-                totalScore += agents[i].GetComponent<Agent>().score;
+                totalFitness += agents[i].GetComponent<Agent>().fitness;
             }
             for (int i = 0; i < agents.Count; i++)
             {
-                agents[i].GetComponent<Agent>().probability = (double)agents[i].GetComponent<Agent>().score / (double)totalScore;
+                agents[i].GetComponent<Agent>().probability = (double)agents[i].GetComponent<Agent>().fitness / (double)totalFitness;
             }
             //double sumProb = 0;
             //for (int i = 0; i < agents.Count; i++)
@@ -104,6 +111,11 @@ public class AgentPopulation : MonoBehaviour
         // Refill the population with children from the mating pool
         for (int i = 0; i < agents.Count; i++)
         {
+            if(i == currentBestAgent)
+            {
+                temp.Add(agents[i].GetComponent<Agent>().directions);
+                continue;
+            }
             //if (matingPool.Count != 0)
             {
                 Agent partnerA;
@@ -122,8 +134,8 @@ public class AgentPopulation : MonoBehaviour
                 }
                 Vector3[] newDirections = partnerA.CrossOver(partnerB);
                 Mutate(newDirections, mutationRate);
-                if (mating) { }
-                //agents[i].GetComponent<Agent>() = newAgent;
+                if (mating)
+                    agents[i].GetComponent<Agent>().directions = newDirections;
                 else
                     temp.Add(newDirections);
             }
@@ -146,22 +158,29 @@ public class AgentPopulation : MonoBehaviour
     }
 
     // Compute the current "most fit" member of the population
-    public (bool, string, string, float) Evaluate()
+    public (string, string, float) Evaluate()
     {
-        bool FINISHTEST = false;
-
         int index = 0;
+        float bestScore = -1;
+        int sumReachTarget = 0;
         for (int i = 0; i < agents.Count; i++)
         {
-            //Console.WriteLine(dnas[i].fitness);
+            if (bestScore < agents[i].GetComponent<Agent>().fitness)
+            {
+                currentBestAgent = i;
+                bestScore = agents[i].GetComponent<Agent>().fitness;
+            }
             if (agents[i].GetComponent<Agent>().reachTarget)
             {
-                index = i;
-                //finished = true;
-                FINISHTEST = true;
+                sumReachTarget++;
             }
         }
-        return (finished, agents[index].gameObject.name, finished ? generations.ToString() : (++generations).ToString(), Time.timeSinceLevelLoad);
+        if(sumReachTarget == agents.Count)
+        {
+            //finished = true;
+            Debug.Log($"Sum target reach goal: {sumReachTarget}");
+        }
+        return (agents[index].gameObject.name, finished ? generations.ToString() : (++generations).ToString(), Time.timeSinceLevelLoad);
     }
 
     private Agent PickOne(List<GameObject> agents)
@@ -182,19 +201,12 @@ public class AgentPopulation : MonoBehaviour
     private string RespawnAgent()
     {
         //yield return new WaitForSeconds(.01f);
-        int bestAgent = -1;
-        float bestScore = -1;
         for (int i = 0; i < agents.Count; i++)
         {
             agents[i].GetComponent<Agent>().Respawn(spawnPosition);
-            if(bestScore < agents[i].GetComponent<Agent>().score)
-            {
-                bestScore = agents[i].GetComponent<Agent>().score;
-                bestAgent = i;
-            }
         }
-        agents[bestAgent].GetComponent<Agent>().SetChampion();
-        return agents[bestAgent].gameObject.name;
+        agents[currentBestAgent].GetComponent<Agent>().SetChampion();
+        return agents[currentBestAgent].gameObject.name;
     }
 
     public bool IsFinish()
@@ -233,11 +245,11 @@ public class AgentPopulation : MonoBehaviour
 
     public void MoveAgents()
     {
-        foreach (var agent in agents)
+        for (int i = 0; i < agents.Count; i++)
         {
-            if (agent.GetComponent<Rigidbody>().velocity.sqrMagnitude <= Mathf.Pow(agentMaxSpeed, 2))
+            if(agents[i].GetComponent<Rigidbody>().velocity.sqrMagnitude <= Mathf.Pow(agentMaxSpeed, 2))
             {
-                agent.GetComponent<Agent>().MoveAgent();
+                agents[i].GetComponent<Agent>().MoveAgent();
             }
         }
     }

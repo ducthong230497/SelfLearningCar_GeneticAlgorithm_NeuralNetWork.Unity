@@ -65,9 +65,9 @@ public class GameManager : MonoBehaviour
 
                 agentPopulation.NaturalSelection();
 
-                (bool, string, string, float) info = agentPopulation.Evaluate();
+                (string, string, float) info = agentPopulation.Evaluate();
 
-                textGeneration.text = $"<color=red>Generation: {info.Item3}</color>";
+                textGeneration.text = $"<color=red>Generation: {info.Item2}</color>";
 
                 textPreviousBestAgent.text = $"<color=red>Previous best agent: {agentPopulation.Generate()}</color>";
 

@@ -109,13 +109,14 @@ MonoBehaviour:
   aliveMaterial: {fileID: 2100000, guid: 8dffd85918c3d9c4cbe984f61ee9b48b, type: 2}
   dieMaterial: {fileID: 2100000, guid: 62894454210cc0d418bbb02b87bf519c, type: 2}
   championMaterial: {fileID: 2100000, guid: c97f647dab19d1147b6f4a26cd60656a, type: 2}
+  fitnessPow: 4
   directions: []
   moveSpeed: 10
   fitness: 0
   score: 0
   probability: 0
   reachTarget: 0
-  i: 0
+  iterator: 0
 --- !u!54 &8319787122243233013
 Rigidbody:
   m_ObjectHideFlags: 0

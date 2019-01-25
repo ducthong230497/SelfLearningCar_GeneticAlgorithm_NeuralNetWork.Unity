@@ -216,7 +216,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -25}
-  m_SizeDelta: {x: 282.72, y: 50}
+  m_SizeDelta: {x: 435.91, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &258788214
 MonoBehaviour:
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 3411409842274334679, guid: 6b0f30efde387ab4ea57401e6afc22ac,
     type: 3}
-  agentMaxSpeed: 10
+  agentMaxSpeed: 15
   mutationRate: 0
   agents: []
   matingPool: []
@@ -867,6 +867,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
+    - target: {fileID: 4449202518760958, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
+      propertyPath: m_RootOrder
+      value: 95
+      objectReference: {fileID: 0}
     - target: {fileID: 4141900199305508, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.89
@@ -1288,6 +1292,20 @@ PrefabInstance:
       value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1325536459527174, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295708139823596, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
+      propertyPath: m_RootOrder
+      value: 96
+      objectReference: {fileID: 0}
+    - target: {fileID: 3724107334165645058, guid: 992159b5c25ebc346886c5a15101f7ee,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 98
+      objectReference: {fileID: 0}
+    - target: {fileID: 7081534065791366915, guid: 992159b5c25ebc346886c5a15101f7ee,
+        type: 3}
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
