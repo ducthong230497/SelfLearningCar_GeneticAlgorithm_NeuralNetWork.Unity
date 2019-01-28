@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     //private Population population;
     #endregion
 
+    public float timeScale = 1;
     public TextMeshProUGUI textGeneration;
     public TextMeshProUGUI textBestAgent;
     public TextMeshProUGUI textPreviousBestAgent;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale != timeScale) Time.timeScale = timeScale;
         #region To be or not to be
         //if (!population.IsFinish())
         //{

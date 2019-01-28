@@ -56,17 +56,17 @@ public class Agent : MonoBehaviour
         // Half from one, half from the other
         for (int i = 0; i < directions.Length; i++)
         {
-            if (i > midpoint) childDirections[i] = directions[i];
-            else childDirections[i] = partner.directions[i];
-            //int test = Random.Range(int.MinValue, int.MaxValue);
-            //if (test % 2 == 0)
-            //{
-            //    childDirections[i] = directions[i];
-            //}
-            //else
-            //{
-            //    childDirections[i] = partner.directions[i];
-            //}
+            //if (i > midpoint) childDirections[i] = directions[i];
+            //else childDirections[i] = partner.directions[i];
+            
+            if (Random.Range(0, 3) == 0)
+            {
+                childDirections[i] = directions[i];
+            }
+            else
+            {
+                childDirections[i] = partner.directions[i];
+            }
         }
         return childDirections;
     }
