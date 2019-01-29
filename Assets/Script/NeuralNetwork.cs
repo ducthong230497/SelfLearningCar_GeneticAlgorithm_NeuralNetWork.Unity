@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class NeuralNetwork
 {
-    private int inputNodes;
-    private int hiddenNodes;
-    private int outputNodes;
+    public int inputNodes;
+    public int hiddenNodes;
+    public int outputNodes;
 
-    private Matrix ihWeights;
-    private Matrix hoWeights;
+    public Matrix ihWeights;
+    public Matrix hoWeights;
 
-    private Matrix biasH;
-    private Matrix biasO;
+    public Matrix biasH;
+    public Matrix biasO;
 
     public NeuralNetwork(int input, int hidden, int output)
     {

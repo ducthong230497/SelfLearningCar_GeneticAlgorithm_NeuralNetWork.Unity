@@ -4,19 +4,6 @@ using UnityEngine;
 
 public class DNA
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
-
     // The genetic sequence
     public char[] genes;
 

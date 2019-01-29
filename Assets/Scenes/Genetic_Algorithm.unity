@@ -351,7 +351,6 @@ GameObject:
   m_Component:
   - component: {fileID: 279472435}
   - component: {fileID: 279472433}
-  - component: {fileID: 279472434}
   - component: {fileID: 279472436}
   m_Layer: 0
   m_Name: GameManager
@@ -381,23 +380,6 @@ MonoBehaviour:
   mutationRate: 0.01
   numberOfAgent: 500
   brainSize: 265
-  mating: 0
---- !u!114 &279472434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 279472432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19d9a6f49c7b99c4caeedc23b3d7a845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mutationRate: 0.01
-  target: 
-  generations: 0
-  finished: 0
   mating: 0
 --- !u!4 &279472435
 Transform:
@@ -868,10 +850,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
-    - target: {fileID: 4449202518760958, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
-      propertyPath: m_RootOrder
-      value: 95
-      objectReference: {fileID: 0}
     - target: {fileID: 4141900199305508, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.89
@@ -1296,6 +1274,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 4962182696347502, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
+      propertyPath: m_RootOrder
+      value: 97
+      objectReference: {fileID: 0}
+    - target: {fileID: 4449202518760958, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
+      propertyPath: m_RootOrder
+      value: 95
+      objectReference: {fileID: 0}
     - target: {fileID: 4295708139823596, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
       propertyPath: m_RootOrder
       value: 96
@@ -1309,10 +1295,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Wall
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962182696347502, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}
-      propertyPath: m_RootOrder
-      value: 97
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 992159b5c25ebc346886c5a15101f7ee, type: 3}

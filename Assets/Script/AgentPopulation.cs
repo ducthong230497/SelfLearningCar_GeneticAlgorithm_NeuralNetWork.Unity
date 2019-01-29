@@ -133,7 +133,7 @@ public class AgentPopulation : MonoBehaviour
                     partnerB = PickOne(agents);
                 }
                 Vector3[] newDirections = partnerA.CrossOver(partnerB);
-                Mutate(newDirections, mutationRate);
+                Mutate(ref newDirections, mutationRate);
                 if (mating)
                     agents[i].GetComponent<Agent>().directions = newDirections;
                 else
@@ -220,7 +220,7 @@ public class AgentPopulation : MonoBehaviour
     }
 
     // Based on a mutation probability, picks a new random character
-    public void Mutate(Vector3[] newDirections, float mutationRate)
+    public void Mutate(ref Vector3[] newDirections, float mutationRate)
     {
         for (int i = 0; i < newDirections.Length; i++)
         {
