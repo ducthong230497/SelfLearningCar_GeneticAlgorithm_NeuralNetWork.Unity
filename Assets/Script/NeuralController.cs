@@ -1,23 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class NeuralController : MonoBehaviour
 {
     [Header("Neural Network")]
-    public      float           raycastDistance;
-    [Tooltip("add a little distance to front ray")]
-    public      float           additional;
-    public      int             inputNodes;
-    public      int             hiddenNodes;
-    public      int             outputNodes;
+    public      int                 inputNodes;
+    public      int                 hiddenNodes;
+    public      int                 outputNodes;
 
     [Header("Genetic Algorithm")]
-    public      float           mutationRate;
-    
+    public      float               mutationRate;
 
-    private     CarPopulation   carPopulation;
-    private     float[]         inputArr;
+    [Header("Timescale")]
+    public      float               timeScale;
+
+    [Header("UI")]
+    public      TextMeshProUGUI     textMeshPro;
+
+    private     CarPopulation       carPopulation;
+    private     float[]             inputArr;
 
     // Start is called before the first frame update
     void Awake()
@@ -26,26 +30,37 @@ public class NeuralController : MonoBehaviour
 
         carPopulation.InitPopulation(mutationRate, inputNodes, hiddenNodes, outputNodes);
 
-        inputArr            = new float[inputNodes];
+        inputArr = new float[inputNodes];
+    }
+
+    private void Update()
+    {
+        if(Time.timeScale != timeScale)
+        {
+            Time.timeScale = timeScale;
+        }
     }
 
     private void FixedUpdate()
     {
-        if (carPopulation.AllOff())
+        if (!carPopulation.IsFinish())
         {
-            carPopulation.CalculateFitness();
+            if (carPopulation.AllOff())
+            {
+                carPopulation.CalculateFitness();
 
-            carPopulation.NaturalSelection();
+                carPopulation.NaturalSelection();
 
-            carPopulation.Evaluate();
+                textMeshPro.text = $"Generation: {carPopulation.Evaluate()}";
 
-            carPopulation.Generate();
-        }
-        else
-        {
-            carPopulation.RunCars();
-            carPopulation.UpdateDriveTime();
-            carPopulation.ShutDownCars();
+                carPopulation.Generate();
+            }
+            else
+            {
+                carPopulation.RunCars();
+                carPopulation.UpdateDriveTime();
+                carPopulation.ShutDownCars();
+            }
         }
     }
 }

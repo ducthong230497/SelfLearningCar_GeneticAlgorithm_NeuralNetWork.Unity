@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class NeuralNetwork
@@ -40,18 +41,49 @@ public class NeuralNetwork
         Matrix hidden = ihWeights * inputs;
         hidden += biasH;
         // Apply activatate function for hidden layer
-        hidden.map(sigmoid);
+        hidden.map(Sigmoid);
 
         // Generate output layer
         Matrix output = hoWeights * hidden;
         output += biasO;
-        output.map(sigmoid);
+        output.map(Sigmoid);
 
         return output.ToArray();
     }
 
-    private float sigmoid(float x)
+    public byte[] ToByteArray()
+    {
+        string str = string.Empty;
+
+        str += MatrixToString(ihWeights);
+        str += MatrixToString(hoWeights);
+        str += MatrixToString(biasH);
+        str += MatrixToString(biasO);
+
+        return Encoding.ASCII.GetBytes(str);
+    }
+
+    private float SigmoidOf2MinusOne(float x)
+    {
+        return (2 / (1 + Mathf.Exp(-x))) - 1;
+    }
+
+    private float Sigmoid(float x)
     {
         return 1 / (1 + Mathf.Exp(-x));
+    }
+
+    private string MatrixToString(Matrix m)
+    {
+        string str = string.Empty;
+        for (int i = 0; i < m.rowNb; i++)
+        {
+            for (int j = 0; j < m.columnNb; j++)
+            {
+                str += $"{m[i][j]}  ";
+            }
+            str += "\r\n";
+        }
+        return $"{str}\r\n";
     }
 }

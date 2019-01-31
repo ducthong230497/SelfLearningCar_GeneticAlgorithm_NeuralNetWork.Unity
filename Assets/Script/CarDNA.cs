@@ -30,7 +30,8 @@ public class CarDNA : MonoBehaviour
     public void CalculateFitness(Vector3 spawnPos)
     {
         score = Vector3.SqrMagnitude(transform.position - spawnPos);
-        fitness = (float)score / carBehaviour.driveTime;
+        //fitness = score / Mathf.Pow(carBehaviour.driveTime, 2);
+        fitness = score;
     }
 
     // Crossover

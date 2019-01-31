@@ -6,6 +6,7 @@ public class CarPopulation : MonoBehaviour
 {
     public GameObject carPrefab;
     public int numberOfCars;
+    public float carMaxSpeed;
 
     [HideInInspector] public float mutationRate;                          // Mutation rate
     [HideInInspector] public List<GameObject> cars;                // Array to hold the current population
@@ -17,6 +18,7 @@ public class CarPopulation : MonoBehaviour
     private float maxFitness;
     private int perfectScore;
     private int outputNodes;
+    private int bestCar;
 
     public void InitPopulation(float mutation, int inputNodes, int hiddenNodes, int outputNodes)
     {
@@ -73,7 +75,11 @@ public class CarPopulation : MonoBehaviour
         // Refill the population with children from the mating pool
         for (int i = 0; i < cars.Count; i++)
         {
-            //if (matingPool.Count != 0)
+            if(i == bestCar)
+            {
+                temp[i] = cars[i].GetComponent<CarDNA>().neuralNetwork;
+            }
+            else
             {
                 CarDNA partnerA = PickOne(cars);
                 CarDNA partnerB = PickOne(cars);
@@ -90,25 +96,29 @@ public class CarPopulation : MonoBehaviour
         {
             generations++;
         }
+        RestartCars();
     }
 
     // Compute the current "most fit" member of the population
     public string Evaluate()
     {
         float worldrecord = 0.0f;
-        int index = 0;
         for (int i = 0; i < cars.Count; i++)
         {
             //Console.WriteLine(dnas[i].fitness);
             if (cars[i].GetComponent<CarDNA>().fitness > worldrecord)
             {
-                index = i;
                 worldrecord = cars[i].GetComponent<CarDNA>().fitness;
+                bestCar = i;
+            }
+            if (cars[i].GetComponent<CarBehaviour>().finish)
+            {
+                finished = true;
             }
         }
 
-        if (worldrecord == perfectScore) finished = true;
-        return $"{cars[index]} {worldrecord} {Time.timeSinceLevelLoad}";
+        //if (worldrecord == perfectScore) finished = true;
+        return $"{generations}";
     }
 
     // Based on a mutation probability, picks a new random character
@@ -155,18 +165,22 @@ public class CarPopulation : MonoBehaviour
     {
         foreach (var car in cars)
         {
-            car.GetComponent<CarBehaviour>().RestartCar(carPrefab.transform.position);
+            car.GetComponent<CarBehaviour>().RestartCar(carPrefab.transform.position, carPrefab.transform.rotation);
         }
     }
 
     public void RunCars()
     {
         float[] output = new float[outputNodes];
+        (float, float) axis;
         foreach (var car in cars)
         {
-            if (!car.GetComponent<CarBehaviour>().off)
+            if (!car.GetComponent<CarBehaviour>().off /*&& car.GetComponent<Rigidbody>().velocity.sqrMagnitude <= Mathf.Pow(carMaxSpeed, 2)*/)
+            {
                 output = car.GetComponent<CarBehaviour>().GetOutput();
-                car.GetComponent<CarBehaviour>().MoveCar(output);
+                axis = car.GetComponent<CarBehaviour>().GetAxisFromOutput(output);
+                car.GetComponent<CarBehaviour>().RunCar(axis);
+            }
         }
     }
 
@@ -174,7 +188,7 @@ public class CarPopulation : MonoBehaviour
     {
         foreach (var car in cars)
         {
-            car.GetComponent<CarBehaviour>().UpdateDriveTime();
+            car.GetComponent<CarBehaviour>().UpdateDriveTime(carPrefab.transform.position);
         }
     }
 
