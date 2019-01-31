@@ -16,6 +16,7 @@ public class CarBehaviour : MonoBehaviour
     private CarDNA carDNA;
     private float oldFitness;
     private float newFitness;
+    private bool moveThroughPitch;
     [HideInInspector] public float driveTime;
     [HideInInspector] public bool finish;
 
@@ -35,7 +36,7 @@ public class CarBehaviour : MonoBehaviour
 
     public float[] GetOutput()
     {
-        float[] input = new float[5];
+        float[] input = new float[6];
         RaycastHit hitInfo;
         for (int i = 0; i < 5; i++)
         {
@@ -47,6 +48,10 @@ public class CarBehaviour : MonoBehaviour
                     input[i] = hitInfo.distance;
                     Debug.DrawRay(headObject.position, (Quaternion.Euler(0, i * -45, 0) * transform.right).normalized * (raycastDistance + additional), Color.red);
                 }
+                else
+                {
+                    input[i] = raycastDistance + additional;
+                }
             }
             else
             {
@@ -56,20 +61,34 @@ public class CarBehaviour : MonoBehaviour
                     input[i] = hitInfo.distance;
                     Debug.DrawRay(headObject.position, (Quaternion.Euler(0, i * -45, 0) * transform.right).normalized * (raycastDistance), Color.red);
                 }
+                else
+                {
+                    input[i] = raycastDistance;
+                }
             }
+        }
+        Debug.DrawRay(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized * (raycastDistance + additional), Color.green);
+        if (Physics.Raycast(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized, out hitInfo, (raycastDistance + additional), LayerMask.GetMask("Wall")))
+        {
+            input[5] = hitInfo.distance;
+            Debug.DrawRay(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized * (raycastDistance + additional), Color.red);
+        }
+        else
+        {
+            input[5] = hitInfo.distance;
         }
         return carDNA.neuralNetwork.FeedForward(input);
     }
 
-    public (float, float) GetAxisFromOutput(float[] output)
+    public float[] GetAxisFromOutput(float[] output)
     {
         float vertical;
         float horizontal;
-        if(output[0] <= 0.25f)
+        if(output[1] <= 0.25f)
         {
             horizontal = -1;
         }
-        else if(output[0] >= 0.5f)
+        else if(output[0] >= 0.65f)
         {
             horizontal = 1;
         }
@@ -82,7 +101,7 @@ public class CarBehaviour : MonoBehaviour
         {
             vertical = -1;
         }
-        else if (output[1] >= 0.5)
+        else if (output[0] >= 0.65)
         {
             vertical = 1;
         }
@@ -94,15 +113,15 @@ public class CarBehaviour : MonoBehaviour
         // If the output is just standing still, then move the car forward
         if (vertical == 0 && horizontal == 0)
             vertical = 1;
-        Debug.Log($"{output[0]} {output[1]} {vertical} {horizontal}");
-        return (horizontal, vertical);
+        //Debug.Log($"{output[0]} {output[1]} {vertical} {horizontal}");
+        return new float[] { horizontal, vertical};
     }
 
-    public void RunCar((float, float) axis)
+    public void RunCar(float[] axis)
     {
         //transform.rotation = Quaternion.Euler(0, output[0] * Mathf.Rad2Deg, 0);
-        rigidbody.angularVelocity = transform.up * axis.Item1 * 3;
-        rigidbody.velocity = (transform.forward * axis.Item2 * 4);
+        rigidbody.angularVelocity = transform.up * axis[0] * 3;
+        rigidbody.velocity = (transform.forward * axis[1] * 4);
 
         //calculate by how much to rotate and a new angle.
         //float rightForce = output[0];
@@ -122,32 +141,27 @@ public class CarBehaviour : MonoBehaviour
 
     public void RestartCar(Vector3 spawnPos, Quaternion spawnRotation)
     {
+        gameObject.SetActive(true);
         off = false;
+        moveThroughPitch = false;
         transform.position = spawnPos;
         transform.rotation = spawnRotation;
         oldFitness = newFitness = 0;
+        driveTime = 0;
     }
 
     public void ShutDownCar()
     {
-        if (driveTime > 3 && rigidbody.velocity.sqrMagnitude < 0.0005)
+        if (driveTime > 4 && !moveThroughPitch)
         {
             off = true;
+            gameObject.SetActive(false);
         }
     }
 
     public void UpdateDriveTime(Vector3 startPos)
     {
         driveTime += Time.fixedDeltaTime;
-        newFitness = Vector3.Magnitude(transform.position - startPos) / driveTime;
-        if(newFitness > oldFitness)
-        {
-            oldFitness = newFitness;
-        }
-        else
-        {
-            off = true;
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -155,11 +169,20 @@ public class CarBehaviour : MonoBehaviour
         if (collision.gameObject.tag.Equals("Wall"))
         {
             off = true;
+            gameObject.SetActive(false);
         }
         else if (collision.gameObject.tag.Equals("Goal"))
         {
             File.WriteAllBytes("Assets/Training_Result/result.txt", carDNA.neuralNetwork.ToByteArray());
             finish = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name.Equals("Pitch"))
+        {
+            moveThroughPitch = true;
         }
     }
 }

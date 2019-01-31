@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class TestScript : MonoBehaviour
 {
@@ -9,12 +11,15 @@ public class TestScript : MonoBehaviour
     NeuralNetwork neuralNetwork;
     Transform headObject;
     Rigidbody rigidbody;
+    string data;
     // Start is called before the first frame update
     void Start()
     {
         neuralNetwork = new NeuralNetwork(5, 5, 2);
         headObject = transform.Find("Head");
         rigidbody = GetComponent<Rigidbody>();
+        byte[] bytes = File.ReadAllBytes("Assets/Training_Result/bestCar.txt");
+        data = Encoding.ASCII.GetString(bytes);
     }
 
     // Update is called once per frame

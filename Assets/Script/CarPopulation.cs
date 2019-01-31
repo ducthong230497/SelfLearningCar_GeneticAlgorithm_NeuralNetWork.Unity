@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class CarPopulation : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class CarPopulation : MonoBehaviour
         //this.target = target;
         mutationRate = mutation;
         finished = false;
-        generations = 0;
+        generations = 1;
         perfectScore = 1;
         this.outputNodes = outputNodes;
 
@@ -73,7 +74,7 @@ public class CarPopulation : MonoBehaviour
     {
         NeuralNetwork[] temp = new NeuralNetwork[cars.Count];
         // Refill the population with children from the mating pool
-        for (int i = 0; i < cars.Count; i++)
+        for (int i = 0; i < cars.Count - 1; i++)
         {
             if(i == bestCar)
             {
@@ -88,10 +89,11 @@ public class CarPopulation : MonoBehaviour
                 temp[i] = child;
             }
         }
-        for (int i = 0; i < cars.Count; i++)
+        for (int i = 0; i < cars.Count - 1; i++)
         {
             cars[i].GetComponent<CarDNA>().neuralNetwork = temp[i];
         }
+        cars[cars.Count - 1].GetComponent<CarDNA>().neuralNetwork = new NeuralNetwork(6, 5, 2);
         //if (matingPool.Count != 0)
         {
             generations++;
@@ -116,7 +118,7 @@ public class CarPopulation : MonoBehaviour
                 finished = true;
             }
         }
-
+        File.WriteAllBytes("Assets/Training_Result/bestCar.txt", cars[bestCar].GetComponent<CarDNA>().neuralNetwork.ToByteArray());
         //if (worldrecord == perfectScore) finished = true;
         return $"{generations}";
     }
@@ -172,7 +174,7 @@ public class CarPopulation : MonoBehaviour
     public void RunCars()
     {
         float[] output = new float[outputNodes];
-        (float, float) axis;
+        float[] axis;
         foreach (var car in cars)
         {
             if (!car.GetComponent<CarBehaviour>().off /*&& car.GetComponent<Rigidbody>().velocity.sqrMagnitude <= Mathf.Pow(carMaxSpeed, 2)*/)
