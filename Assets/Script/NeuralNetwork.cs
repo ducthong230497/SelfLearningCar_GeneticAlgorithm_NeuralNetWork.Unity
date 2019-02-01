@@ -82,8 +82,8 @@ public class NeuralNetwork
             {
                 str += $"{m[i][j]}  ";
             }
-            str += "\r\n";
+            str += "\n";
         }
-        return $"{str}\r\n";
+        return $"{str}\n";
     }
 }

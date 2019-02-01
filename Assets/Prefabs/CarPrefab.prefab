@@ -140,8 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: 10
   forceMode: 0
-  raycastDistance: 4.5
-  additional: 1
+  raycastDistance: 4
+  additional: 0
   off: 0
   driveTime: 0
   finish: 0

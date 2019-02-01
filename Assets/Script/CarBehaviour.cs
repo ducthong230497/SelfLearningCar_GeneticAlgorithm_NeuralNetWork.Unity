@@ -171,11 +171,6 @@ public class CarBehaviour : MonoBehaviour
             off = true;
             gameObject.SetActive(false);
         }
-        else if (collision.gameObject.tag.Equals("Goal"))
-        {
-            File.WriteAllBytes("Assets/Training_Result/result.txt", carDNA.neuralNetwork.ToByteArray());
-            finish = true;
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -183,6 +178,11 @@ public class CarBehaviour : MonoBehaviour
         if (other.gameObject.name.Equals("Pitch"))
         {
             moveThroughPitch = true;
+        }
+        else if (other.gameObject.tag.Equals("Goal"))
+        {
+            File.WriteAllBytes("Assets/Training_Result/result.txt", carDNA.neuralNetwork.ToByteArray());
+            finish = true;
         }
     }
 }
