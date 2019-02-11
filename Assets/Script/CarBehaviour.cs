@@ -67,15 +67,15 @@ public class CarBehaviour : MonoBehaviour
                 }
             }
         }
-        Debug.DrawRay(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized * (raycastDistance + additional), Color.green);
-        if (Physics.Raycast(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized, out hitInfo, (raycastDistance + additional), LayerMask.GetMask("Wall")))
+        Debug.DrawRay(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized * (raycastDistance), Color.green);
+        if (Physics.Raycast(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized, out hitInfo, (raycastDistance), LayerMask.GetMask("Wall")))
         {
             input[5] = hitInfo.distance;
-            Debug.DrawRay(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized * (raycastDistance + additional), Color.red);
+            Debug.DrawRay(headObject.position, (Quaternion.Euler(0, 90, 0) * transform.right).normalized * (raycastDistance), Color.red);
         }
         else
         {
-            input[5] = hitInfo.distance;
+            input[5] = raycastDistance;
         }
         return carDNA.neuralNetwork.FeedForward(input);
     }

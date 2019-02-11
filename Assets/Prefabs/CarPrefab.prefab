@@ -141,7 +141,7 @@ MonoBehaviour:
   moveForce: 10
   forceMode: 0
   raycastDistance: 4
-  additional: 0
+  additional: 18.5
   off: 0
   driveTime: 0
   finish: 0
@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 4138282661480185126}
   - component: {fileID: 4138282661480185144}
   - component: {fileID: 4138282661480185127}
+  - component: {fileID: 5065772087898428241}
   m_Layer: 10
   m_Name: Head
   m_TagString: Untagged
@@ -222,3 +223,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &5065772087898428241
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4138282661480185125}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.99999994, z: 0.99999994}
+  m_Center: {x: 0, y: 0, z: -0.0000038146973}

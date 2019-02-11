@@ -17,22 +17,26 @@ public class TestScript : MonoBehaviour
     NeuralNetwork neuralNetwork;
     Transform headObject;
     Rigidbody rigidbody;
-    string[] data;
     // Start is called before the first frame update
     void Start()
     {
         neuralNetwork = new NeuralNetwork(6, 5, 2);
         headObject = transform.Find("Head");
         rigidbody = GetComponent<Rigidbody>();
-        byte[] bytes = File.ReadAllBytes("Assets/Training_Result/test.txt");
+        ReadBestCarTrainedData("Assets/Training_Result/test.txt", ref neuralNetwork);
+    }
+
+    private void ReadBestCarTrainedData(string filePath, ref NeuralNetwork neuralNetwork)
+    {
+        byte[] bytes = File.ReadAllBytes(filePath);
         string str = Encoding.ASCII.GetString(bytes);
-        data = str.Split('\n');
+        string[] data = str.Split('\n');
         int i = 0;
         for (; i < neuralNetwork.ihWeights.rowNb; i++)
         {
             int j = 0;
             string[] number = data[i].Replace("  ", " ").Split(' ');
-            for(; j < neuralNetwork.ihWeights.columnNb; j++)
+            for (; j < neuralNetwork.ihWeights.columnNb; j++)
             {
                 neuralNetwork.ihWeights[i][j] = float.Parse(number[j]);
             }
@@ -119,7 +123,7 @@ public class TestScript : MonoBehaviour
             input[5] = 4;
         }
         var output = neuralNetwork.FeedForward(input);
-        Debug.Log($"{output[0]} {output[1]}");
+        //Debug.Log($"{output[0]} {output[1]}");
         float vertical;
         float horizontal;
         if (output[1] <= 0.25f)

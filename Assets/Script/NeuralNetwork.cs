@@ -84,6 +84,6 @@ public class NeuralNetwork
             }
             str += "\n";
         }
-        return $"{str}\n";
+        return $"{str}";
     }
 }
