@@ -375,7 +375,7 @@ MonoBehaviour:
   textGeneration: {fileID: 1377970037}
   textBestAgent: {fileID: 1874864943}
   textPreviousBestAgent: {fileID: 258788214}
-  target: {fileID: 670490032}
+  target: {fileID: 2021009544}
   spawnPos: {fileID: 825161760}
   mutationRate: 0.01
   numberOfAgent: 500
@@ -565,12 +565,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 90}
---- !u!4 &670490032 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4449202518760958, guid: 992159b5c25ebc346886c5a15101f7ee,
-    type: 3}
-  m_PrefabInstance: {fileID: 1854722951}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &825161759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,3 +1452,9 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1874864941}
   m_CullTransparentMesh: 0
+--- !u!4 &2021009544 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4449202518760958, guid: 992159b5c25ebc346886c5a15101f7ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 1854722951}
+  m_PrefabAsset: {fileID: 0}
