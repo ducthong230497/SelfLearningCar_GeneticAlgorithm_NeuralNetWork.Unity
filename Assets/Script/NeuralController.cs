@@ -6,6 +6,8 @@ using UnityEngine.Windows;
 
 public class NeuralController : MonoBehaviour
 {
+    public      Transform           spawnPosition;
+
     [Header("Neural Network")]
     public      int                 inputNodes;
     public      int                 hiddenNodes;
@@ -28,7 +30,7 @@ public class NeuralController : MonoBehaviour
     {
         carPopulation = GetComponent<CarPopulation>();
 
-        carPopulation.InitPopulation(mutationRate, inputNodes, hiddenNodes, outputNodes);
+        carPopulation.InitPopulation(mutationRate, inputNodes, hiddenNodes, outputNodes, spawnPosition.position);
 
         inputArr = new float[inputNodes];
     }

@@ -23,9 +23,10 @@ public class CarPopulation : MonoBehaviour
     private int outputNodes;
     private int bestCar;
 
-    public void InitPopulation(float mutation, int inputNodes, int hiddenNodes, int outputNodes)
+    public void InitPopulation(float mutation, int inputNodes, int hiddenNodes, int outputNodes, Vector3 spawnPos)
     {
-        spawnPosition = carPrefab.transform.position;
+        //spawnPosition = carPrefab.transform.position;
+        spawnPosition = spawnPos;
         //this.target = target;
         mutationRate = mutation;
         finished = false;
@@ -36,11 +37,11 @@ public class CarPopulation : MonoBehaviour
         cars = new List<GameObject>();
         for (int i = 0; i < numberOfCars; i++)
         {
-            cars.Add(Instantiate(carPrefab, carPrefab.transform.position, carPrefab.transform.rotation, carParent));
+            cars.Add(Instantiate(carPrefab, spawnPosition, carPrefab.transform.rotation, carParent));
             cars[i].GetComponent<CarDNA>().InitCar(inputNodes, hiddenNodes, outputNodes);
             cars[i].name = $"Car {i + 1}";
         }
-        //ReadBestCarTrainedData("Assets/Training_Result/bestCar.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
+        ReadBestCarTrainedData("Assets/Training_Result/First_Car_Train_Data_06_03_1.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
     }
 
     public void CalculateFitness()
@@ -100,7 +101,7 @@ public class CarPopulation : MonoBehaviour
         {
             generations++;
         }
-        RestartCars();
+        RestartCars(spawnPosition);
     }
 
     // Compute the current "most fit" member of the population
@@ -165,11 +166,11 @@ public class CarPopulation : MonoBehaviour
         return true;
     }
 
-    public void RestartCars()
+    public void RestartCars(Vector3 spawnPos)
     {
         foreach (var car in cars)
         {
-            car.GetComponent<CarBehaviour>().RestartCar(carPrefab.transform.position, carPrefab.transform.rotation);
+            car.GetComponent<CarBehaviour>().RestartCar(spawnPos, carPrefab.transform.rotation);
         }
     }
 

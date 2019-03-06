@@ -19,6 +19,7 @@ public class CarBehaviour : MonoBehaviour
     private bool moveThroughPitch;
     [HideInInspector] public float driveTime;
     [HideInInspector] public bool finish;
+    [HideInInspector] public int hitHackingPoint;
 
     //Test
     Transform headObject;
@@ -148,6 +149,7 @@ public class CarBehaviour : MonoBehaviour
         transform.rotation = spawnRotation;
         oldFitness = newFitness = 0;
         driveTime = 0;
+        hitHackingPoint = 0;
     }
 
     public void ShutDownCar()
@@ -175,7 +177,7 @@ public class CarBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Equals("Pitch"))
+        if (other.gameObject.tag.Equals("Pitch"))
         {
             moveThroughPitch = true;
         }
@@ -183,6 +185,12 @@ public class CarBehaviour : MonoBehaviour
         {
             File.WriteAllBytes("Assets/Training_Result/result.txt", carDNA.neuralNetwork.ToByteArray());
             finish = true;
+            off = true;
+            gameObject.SetActive(false);
+        }
+        else if (other.gameObject.tag.Equals("HackingPoint"))
+        {
+            hitHackingPoint++;
         }
     }
 }
