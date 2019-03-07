@@ -154,7 +154,7 @@ public class CarBehaviour : MonoBehaviour
 
     public void ShutDownCar()
     {
-        if (driveTime > 4 && !moveThroughPitch)
+        if ((driveTime > 4 && !moveThroughPitch) || driveTime > 60*3.5f)
         {
             off = true;
             gameObject.SetActive(false);
@@ -184,9 +184,10 @@ public class CarBehaviour : MonoBehaviour
         else if (other.gameObject.tag.Equals("Goal"))
         {
             File.WriteAllBytes("Assets/Training_Result/result.txt", carDNA.neuralNetwork.ToByteArray());
-            finish = true;
+            //finish = true;
             off = true;
             gameObject.SetActive(false);
+            hitHackingPoint++;
         }
         else if (other.gameObject.tag.Equals("HackingPoint"))
         {

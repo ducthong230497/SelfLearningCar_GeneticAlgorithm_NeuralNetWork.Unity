@@ -29,7 +29,7 @@ public class CarDNA : MonoBehaviour
 
     public void CalculateFitness(Vector3 spawnPos)
     {
-        score = Vector3.SqrMagnitude(transform.position - spawnPos) + carBehaviour.hitHackingPoint * 100;
+        score = Vector3.SqrMagnitude(transform.position - spawnPos) + Mathf.Pow(1000, carBehaviour.hitHackingPoint);
         //fitness = score / Mathf.Pow(carBehaviour.driveTime, 2);
         fitness = score;
     }

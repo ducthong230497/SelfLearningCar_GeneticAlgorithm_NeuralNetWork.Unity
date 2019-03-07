@@ -41,7 +41,9 @@ public class CarPopulation : MonoBehaviour
             cars[i].GetComponent<CarDNA>().InitCar(inputNodes, hiddenNodes, outputNodes);
             cars[i].name = $"Car {i + 1}";
         }
-        ReadBestCarTrainedData("Assets/Training_Result/First_Car_Train_Data_06_03_1.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
+        //ReadBestCarTrainedData("Assets/Training_Result/bestCar.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
+        //ReadBestCarTrainedData("Assets/Training_Result/Second_Car_Train_Data_22.5_4.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
+        ReadBestCarTrainedData("Assets/Training_Result/result.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
     }
 
     public void CalculateFitness()
