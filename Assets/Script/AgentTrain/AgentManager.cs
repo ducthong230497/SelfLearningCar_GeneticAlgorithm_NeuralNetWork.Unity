@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class AgentManager : MonoBehaviour
 {
     #region To be or not to be
     //public string target;

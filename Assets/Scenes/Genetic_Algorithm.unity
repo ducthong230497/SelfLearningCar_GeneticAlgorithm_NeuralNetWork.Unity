@@ -378,8 +378,8 @@ MonoBehaviour:
   target: {fileID: 2021009544}
   spawnPos: {fileID: 825161760}
   mutationRate: 0.01
-  numberOfAgent: 500
-  brainSize: 265
+  numberOfAgent: 300
+  brainSize: 400
   mating: 0
 --- !u!4 &279472435
 Transform:

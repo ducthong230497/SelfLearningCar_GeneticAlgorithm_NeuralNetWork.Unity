@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +9,7 @@ public class CameraMovement : MonoBehaviour
     private Rigidbody rigidbody;
     private Vector3 startPosition;
     private bool canMove;
+    private Transform bestCar;
 
     private void Start()
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Windows;
 
 public class NeuralController : MonoBehaviour
@@ -15,6 +16,7 @@ public class NeuralController : MonoBehaviour
 
     [Header("Genetic Algorithm")]
     public      float               mutationRate;
+    public      bool                trainingMode;
 
     [Header("Timescale")]
     public      float               timeScale;
@@ -30,7 +32,7 @@ public class NeuralController : MonoBehaviour
     {
         carPopulation = GetComponent<CarPopulation>();
 
-        carPopulation.InitPopulation(mutationRate, inputNodes, hiddenNodes, outputNodes, spawnPosition.position);
+        carPopulation.InitPopulation(mutationRate, inputNodes, hiddenNodes, outputNodes, spawnPosition.position, trainingMode);
 
         inputArr = new float[inputNodes];
     }
@@ -47,7 +49,7 @@ public class NeuralController : MonoBehaviour
     {
         if (!carPopulation.IsFinish())
         {
-            if (carPopulation.AllOff())
+            if (carPopulation.AllOff() && trainingMode)
             {
                 carPopulation.CalculateFitness();
 

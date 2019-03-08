@@ -8,6 +8,7 @@ public class CarPopulation : MonoBehaviour
 {
     public Transform carParent;
     public GameObject carPrefab;
+    public GameObject bestCarPrefab;
     public int numberOfCars;
     public float carMaxSpeed;
 
@@ -22,28 +23,36 @@ public class CarPopulation : MonoBehaviour
     private int perfectScore;
     private int outputNodes;
     private int bestCar;
+    private bool trainingMode;
+    Vector3 SmoothPosVelocity = Vector3.zero; // Velocity of Position Smoothing
 
-    public void InitPopulation(float mutation, int inputNodes, int hiddenNodes, int outputNodes, Vector3 spawnPos)
+    public void InitPopulation(float mutation, int inputNodes, int hiddenNodes, int outputNodes, Vector3 spawnPos, bool trainingMode)
     {
-        //spawnPosition = carPrefab.transform.position;
-        spawnPosition = spawnPos;
-        //this.target = target;
-        mutationRate = mutation;
-        finished = false;
-        generations = 1;
-        perfectScore = 1;
-        this.outputNodes = outputNodes;
-
-        cars = new List<GameObject>();
-        for (int i = 0; i < numberOfCars; i++)
+        this.trainingMode = trainingMode;
+        if (trainingMode)
         {
-            cars.Add(Instantiate(carPrefab, spawnPosition, carPrefab.transform.rotation, carParent));
-            cars[i].GetComponent<CarDNA>().InitCar(inputNodes, hiddenNodes, outputNodes);
-            cars[i].name = $"Car {i + 1}";
+            //spawnPosition = carPrefab.transform.position;
+            spawnPosition = spawnPos;
+            //this.target = target;
+            mutationRate = mutation;
+            finished = false;
+            generations = 1;
+            perfectScore = 1;
+            this.outputNodes = outputNodes;
+
+            cars = new List<GameObject>();
+            for (int i = 0; i < numberOfCars; i++)
+            {
+                cars.Add(Instantiate(carPrefab, spawnPosition, carPrefab.transform.rotation, carParent));
+                cars[i].GetComponent<CarDNA>().InitCar(inputNodes, hiddenNodes, outputNodes);
+                cars[i].name = $"Car {i + 1}";
+            }
         }
-        //ReadBestCarTrainedData("Assets/Training_Result/bestCar.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
-        //ReadBestCarTrainedData("Assets/Training_Result/Second_Car_Train_Data_22.5_4.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
-        ReadBestCarTrainedData("Assets/Training_Result/result.txt", ref cars[0].GetComponent<CarDNA>().neuralNetwork);
+        else
+        {
+            cars.Add(Instantiate(bestCarPrefab, bestCarPrefab.transform.position, bestCarPrefab.transform.rotation));
+            cars[0].GetComponent<CarDNA>().InitCar(inputNodes, hiddenNodes, outputNodes);
+        }
     }
 
     public void CalculateFitness()
@@ -81,7 +90,7 @@ public class CarPopulation : MonoBehaviour
         // Refill the population with children from the mating pool
         for (int i = 0; i < cars.Count - 1; i++)
         {
-            if(i == bestCar)
+            if (i == bestCar)
             {
                 temp[i] = cars[i].GetComponent<CarDNA>().neuralNetwork;
             }
@@ -139,11 +148,11 @@ public class CarPopulation : MonoBehaviour
 
     private void DoMutate(ref Matrix m, float mutaionRate)
     {
-        for(int i = 0; i < m.rowNb; i++)
+        for (int i = 0; i < m.rowNb; i++)
         {
-            for(int j = 0; j < m.columnNb; j++)
+            for (int j = 0; j < m.columnNb; j++)
             {
-                if(Random.Range(0f, 1f) < mutaionRate)
+                if (Random.Range(0f, 1f) < mutaionRate)
                 {
                     m[i][j] = Random.Range(-1f, 1f);
                 }
@@ -188,6 +197,15 @@ public class CarPopulation : MonoBehaviour
                 axis = car.GetComponent<CarBehaviour>().GetAxisFromOutput(output);
                 car.GetComponent<CarBehaviour>().RunCar(axis);
             }
+        }
+
+        if (!trainingMode)
+        {
+            Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, cars[0].transform.GetChild(1).position, ref SmoothPosVelocity, 0.7f); // Smoothly set the position
+
+            Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation,
+                                                             Quaternion.LookRotation(cars[0].transform.position - Camera.main.transform.position),
+                                                             0.1f); // Smoothly set the rotation
         }
     }
 

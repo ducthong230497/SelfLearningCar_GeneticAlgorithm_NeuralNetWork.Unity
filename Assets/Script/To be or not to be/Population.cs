@@ -81,7 +81,7 @@ public class Population : MonoBehaviour
     }
 
     // Compute the current "most fit" member of the population
-    public string Evaluate()
+    public (string, string, string) Evaluate()
     {
         float worldrecord = 0.0f;
         int index = 0;
@@ -96,7 +96,7 @@ public class Population : MonoBehaviour
         }
 
         if (worldrecord == perfectScore) finished = true;
-        return $"{DNAs[index].getPhrase()} {worldrecord} {Time.timeSinceLevelLoad}";
+        return (DNAs[index].getPhrase(), worldrecord.ToString("P"), Time.timeSinceLevelLoad.ToString());
     }
 
     public bool IsFinish()
