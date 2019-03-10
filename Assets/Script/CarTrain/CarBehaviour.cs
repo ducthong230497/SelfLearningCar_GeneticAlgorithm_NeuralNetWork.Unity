@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
+/// <summary>
+/// This is the phenotype of Genetic Algorithm
+/// </summary>
 public class CarBehaviour : MonoBehaviour
 {
     public float moveForce;

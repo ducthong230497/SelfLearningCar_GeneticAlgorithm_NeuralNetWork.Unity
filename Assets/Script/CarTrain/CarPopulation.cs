@@ -21,6 +21,8 @@ public class CarPopulation : MonoBehaviour
     private Vector3 spawnPosition;
     private float maxFitness;
     private int perfectScore;
+    private int inputNodes;
+    private int hiddenNodes;
     private int outputNodes;
     private int bestCar;
     private bool trainingMode;
@@ -38,6 +40,8 @@ public class CarPopulation : MonoBehaviour
             finished = false;
             generations = 1;
             perfectScore = 1;
+            this.inputNodes = inputNodes;
+            this.hiddenNodes = hiddenNodes;
             this.outputNodes = outputNodes;
 
             cars = new List<GameObject>();
@@ -107,7 +111,7 @@ public class CarPopulation : MonoBehaviour
         {
             cars[i].GetComponent<CarDNA>().neuralNetwork = temp[i];
         }
-        cars[cars.Count - 1].GetComponent<CarDNA>().neuralNetwork = new NeuralNetwork(6, 5, 2);
+        cars[cars.Count - 1].GetComponent<CarDNA>().neuralNetwork = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes);
         //if (matingPool.Count != 0)
         {
             generations++;
