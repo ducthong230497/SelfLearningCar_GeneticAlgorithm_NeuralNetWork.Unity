@@ -172,6 +172,7 @@ public class AgentPopulation : MonoBehaviour
             }
             if (agents[i].GetComponent<Agent>().reachTarget)
             {
+                finished = true;
                 sumReachTarget++;
             }
         }

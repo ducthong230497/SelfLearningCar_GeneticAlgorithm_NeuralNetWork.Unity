@@ -136,7 +136,7 @@ public class CarPopulation : MonoBehaviour
                 finished = true;
             }
         }
-        File.WriteAllBytes("Assets/Training_Result/bestCar.txt", cars[bestCar].GetComponent<CarDNA>().neuralNetwork.ToByteArray());
+        //File.WriteAllBytes("Assets/Training_Result/bestCar.txt", cars[bestCar].GetComponent<CarDNA>().neuralNetwork.ToByteArray());
         //if (worldrecord == perfectScore) finished = true;
         return $"{generations}";
     }
